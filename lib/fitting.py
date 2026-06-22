@@ -25,13 +25,15 @@ def linear_fit_ppi(X, Y_true, Y_pred, selected):
     # Add intercept
     ones = np.ones((X.shape[0], 1))
     X = np.concatenate([ones, X], axis=1)
+    selected_mask = np.zeros(X.shape[0], dtype=bool)
+    selected_mask[selected] = True
 
     return ppi_ols_pointestimate(
-        X = X[selected],
-        Y = Y_true[selected],
-        Yhat = Y_pred[selected],
-        X_unlabeled = X[~selected],
-        Yhat_unlabeled = Y_pred[~selected],
+        X = X[selected_mask],
+        Y = Y_true[selected_mask],
+        Yhat = Y_pred[selected_mask],
+        X_unlabeled = X[~selected_mask],
+        Yhat_unlabeled = Y_pred[~selected_mask],
     )
 
 def linear_fit_dsl(X, Y_true, Y_pred, selected):
@@ -111,13 +113,16 @@ def logit_fit_ppi(X, Y_true, Y_pred, selected):
     # Add intercept
     ones = np.ones((X.shape[0], 1))
     X = np.concatenate([ones, X], axis=1)
+    selected_mask = np.zeros(X.shape[0], dtype=bool)
+    selected_mask[selected] = True
 
     return ppi_logistic_pointestimate(
-        X = X[selected],
-        Y = Y_true[selected],
-        Yhat = Y_pred[selected],
-        X_unlabeled = X[~selected],
-        Yhat_unlabeled = Y_pred[~selected],
+        X = X[selected_mask],
+        Y = Y_true[selected_mask],
+        Yhat = Y_pred[selected_mask],
+        X_unlabeled = X[~selected_mask],
+        Yhat_unlabeled = Y_pred[~selected_mask],
+        lam = 1,
     )
 
 def logit_fit_dsl(X, Y_true, Y_pred, selected):
